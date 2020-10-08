@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Filip.ChatGUI.Properties {
+namespace P2P_Netwerken.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -7,9 +7,9 @@ using System.Web.Http.SelfHost;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
-using Filip.ChatModels;
+using P2P_Netwerken.ChatModels;
 
-namespace Filip.ChatBusiness
+namespace P2P_Netwerken.ChatBusiness
 {
     public class ChatController : ApiController
     {

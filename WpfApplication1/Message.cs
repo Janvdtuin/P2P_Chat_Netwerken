@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Filip.ChatModels
+namespace P2P_Netwerken.ChatModels
 {
     public class Message
     {

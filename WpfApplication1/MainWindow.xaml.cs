@@ -17,9 +17,9 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Windows.Threading;
-using Filip.ChatModels;
+using P2P_Netwerken.ChatModels;
 
-namespace Filip.ChatGUI
+namespace P2P_Netwerken.ChatGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -27,7 +27,7 @@ namespace Filip.ChatGUI
     public partial class MainWindow : Window
     {
         
-        private Filip.ChatBusiness.ChatProxy _cp { get; set; }
+        private P2P_Netwerken.ChatBusiness.ChatProxy _cp { get; set; }
 
         public MainWindow()
         {
@@ -100,7 +100,7 @@ namespace Filip.ChatGUI
         {
             if (!string.IsNullOrWhiteSpace(textBoxMyPort.Text) && !string.IsNullOrWhiteSpace(textBoxPartnerAddress.Text))
             {
-                _cp = new Filip.ChatBusiness.ChatProxy(this.ShowMessage, this.ShowStatus, textBoxMyPort.Text, textBoxPartnerAddress.Text);
+                _cp = new P2P_Netwerken.ChatBusiness.ChatProxy(this.ShowMessage, this.ShowStatus, textBoxMyPort.Text, textBoxPartnerAddress.Text);
                 if (_cp.Status)
                 {
                     chatArea.Text += ("Ready to chat!");

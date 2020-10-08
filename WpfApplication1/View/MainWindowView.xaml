@@ -1,0 +1,15 @@
+﻿<Window x:Class="P2P_Netwerken.View.MainWindowView"
+        x:Name="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2P_Netwerken.View"
+        mc:Ignorable="d"
+        Title="MainWindowView" Height="450" Width="800">
+    <Grid>
+        <Button Name="SearchPeersButton" Content="Search for peers" HorizontalAlignment="Left" Margin="265,60,0,0" VerticalAlignment="Top" Width="267" Height="57" Command="{Binding SearchForPeersButtonClickCommand}" CommandParameter="{Binding ElementName=MainWindow}"/>
+        <Button Content="Temp Chat" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Width="75" Command="{Binding TempChatButtonClickCommand}" CommandParameter="{Binding ElementName=MainWindow}" />
+
+    </Grid>
+</Window>

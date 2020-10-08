@@ -1,99 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using P2P_Netwerken.ChatModels;
+using System;
+using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
-using System.Windows.Threading;
-using Filip.ChatModels;
 
-namespace Filip.ChatBusiness
+namespace P2P_Netwerken.ChatBusiness
 {
     public class ChatProxy
     {
-        public bool Status { get; set; }
-
-        public delegate void ShowReceivedMessage(Message m);
-        public delegate void ShowStatus(string txt);
-
-        private ShowReceivedMessage _srm;
-        private ShowStatus _sst;
+        private ChatProxy.ShowReceivedMessage _srm;
+        private ChatProxy.ShowStatus _sst;
         private HttpClient _client;
         private HttpSelfHostServer _server;
 
-        //constructor
-        public ChatProxy(ShowReceivedMessage srm, ShowStatus sst, string myport, string partneraddress)
-        {
-            StartChatServer(myport);
-            if (Status)
-            {
-                _srm = srm;
-                _sst = sst;
-                _client = new HttpClient() { BaseAddress = new Uri(partneraddress) };
+        public bool Status { get; set; }
 
-                ChatController.ThrowMessageArrivedEvent += (sender, args) => { ShowMessage(args.Message); };
-            }
+        public ChatProxy(
+          ChatProxy.ShowReceivedMessage srm,
+          ChatProxy.ShowStatus sst,
+          string myport,
+          string partneraddress)
+        {
+            this.StartChatServer(myport);
+            if (!this.Status)
+                return;
+            this._srm = srm;
+            this._sst = sst;
+            this._client = new HttpClient()
+            {
+                BaseAddress = new Uri(partneraddress)
+            };
+            ChatController.ThrowMessageArrivedEvent += (ChatController.EventHandler)((sender, args) => this.ShowMessage(args.Message));
         }
 
-        //private methods
         private void StartChatServer(string myport)
         {
             try
             {
-                string url = "http://localhost:" + myport + "/";
-                HttpSelfHostConfiguration config = new HttpSelfHostConfiguration(url);
-
-                config.Routes.MapHttpRoute(
-                    name: "DefaultApi",
-                    routeTemplate: "api/{controller}/{id}",
-                    defaults: new { id = RouteParameter.Optional }
-                );
-
-                _server = new HttpSelfHostServer(config);
-                _server.OpenAsync().Wait();
-
-                Status = true;
+                HttpSelfHostConfiguration configuration = new HttpSelfHostConfiguration("http://localhost:" + myport + "/");
+                configuration.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", (object)new
+                {
+                    id = System.Web.Http.RouteParameter.Optional
+                });
+                this._server = new HttpSelfHostServer(configuration);
+                this._server.OpenAsync().Wait();
+                this.Status = true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Status = false;
-                ShowError("Something happened!");
+                this.Status = false;
+                this.ShowError("Something happened!");
             }
         }
 
-        private void stopChatServer()
-        {
-            _server.CloseAsync().Wait();
-        }
+        private void stopChatServer() => this._server.CloseAsync().Wait();
 
-        private void ShowMessage(Message m)
-        {
-            _srm(m);
-        }
+        private void ShowMessage(Message m) => this._srm(m);
 
-        private void ShowError(string txt)
-        {
-            _sst(txt);
-        }
+        private void ShowError(string txt) => this._sst(txt);
 
-        //public methods
         public async void SendMessage(Message m)
         {
             try
             {
-                HttpResponseMessage response = await _client.PostAsync("api/chat", m.serializedMessage);
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                    ShowError("Partner responded, but awkwardly! Better hide!");
-                ShowMessage(m);
+                HttpResponseMessage response = await this._client.PostAsync("api/chat", (HttpContent)m.serializedMessage);
+                if (response.StatusCode != HttpStatusCode.OK)
+                    this.ShowError("Partner responded, but awkwardly! Better hide!");
+                this.ShowMessage(m);
+                response = (HttpResponseMessage)null;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                stopChatServer();
-                ShowError("Partner unreachable. Closing your server!");
+                Exception e = ex;
+                this.stopChatServer();
+                this.ShowError("Partner unreachable. Closing your server!");
             }
         }
 
+        public delegate void ShowReceivedMessage(Message m);
+
+        public delegate void ShowStatus(string txt);
     }
 }

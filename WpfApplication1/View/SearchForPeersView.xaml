@@ -1,0 +1,31 @@
+﻿<Window x:Class="P2P_Netwerken.View.SearchForPeersView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2P_Netwerken.View"
+        mc:Ignorable="d"
+        Title="SearchForPeersView" Height="450" Width="800">
+    <Grid>
+        <ListBox Name="Peerlb" ItemsSource="{Binding List}" HorizontalContentAlignment="Stretch" Margin="117,26,139,106" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Bisque" Background="Beige" BorderThickness="2">
+                        <StackPanel Width="250">
+                            <TextBlock Text="{Binding IpAddress}" />
+                            <TextBlock Text="{Binding HostName}" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox Text="{Binding ElementName=Peerlb, Path=SelectedValue}" Margin="10,320,645,76" />
+        <Button x:Name="ConnectToPeer" Content="Connect" Command="{Binding ConnectToPeerButtonClickCommand}" Margin="660,201,-1,169"/>
+
+        <Button Content="Scan" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="92" Height="49" Margin="0,0,30,30" Command="{Binding ScanForPeersButtonClickCommand}"/>
+        <ProgressBar 
+                    Margin="185,353,203,48"
+                    Height="20"
+                    Value="{Binding CurrentProgress, Mode=OneWay}" />
+    </Grid>
+</Window>
