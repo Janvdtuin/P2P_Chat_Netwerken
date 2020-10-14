@@ -23,8 +23,6 @@ namespace P2P_Netwerken.Viewmodel
         {
             TestButtonClickCommand = new RelayCommand(execute => TestButtonClick(), canExecute => true);
 
-            ChatAreaText = "TEST";
-
             //door middel van een singleton kunnen de items opgehaald worden uit het object. 
             //Dit moet ook gedaan worden bij de ChatProxy, deze moet een singleton worden waardoor er vanaf een andere klasse bij de properties kunnen komen.
             string test = TestObject.Instance.test;
@@ -35,6 +33,8 @@ namespace P2P_Netwerken.Viewmodel
 
 
         }
+
+
 
         private void TestButtonClick()
         {

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http.SelfHost;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Web.Http;
 using P2P_Netwerken.ChatModels;
 
