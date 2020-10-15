@@ -97,11 +97,7 @@ namespace P2P_Netwerken.View
         {
             if (!string.IsNullOrWhiteSpace(textBoxMyPort.Text) && !string.IsNullOrWhiteSpace(textBoxPartnerAddress.Text))
             {
-                Console.WriteLine("Start Chat method");
-
-                _cp = new ChatBusiness.ChatProxy(ShowMessage, ShowStatus, textBoxMyPort.Text, textBoxPartnerAddress.Text);
-
-                //_cp = new P2P_Netwerken.ChatBusiness.ChatProxy(this.ShowMessage, this.ShowStatus, textBoxMyPort.Text, textBoxPartnerAddress.Text);
+                _cp = new P2P_Netwerken.ChatBusiness.ChatProxy(this.ShowMessage, this.ShowStatus, textBoxMyPort.Text, textBoxPartnerAddress.Text);
                 if (_cp.Status)
                 {
                     chatArea.Text += ("Ready to chat!");

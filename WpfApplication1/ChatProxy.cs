@@ -4,8 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
-using System.Web.Routing;
-
 
 namespace P2P_Netwerken.ChatBusiness
 {
@@ -18,8 +16,11 @@ namespace P2P_Netwerken.ChatBusiness
 
         public bool Status { get; set; }
 
-        public ChatProxy(ChatProxy.ShowReceivedMessage srm, ChatProxy.ShowStatus sst,
-          string myport, string partneraddress)
+        public ChatProxy(
+          ChatProxy.ShowReceivedMessage srm,
+          ChatProxy.ShowStatus sst,
+          string myport,
+          string partneraddress)
         {
             this.StartChatServer(myport);
             if (!this.Status)
@@ -37,10 +38,10 @@ namespace P2P_Netwerken.ChatBusiness
         {
             try
             {
-                var configuration = new HttpSelfHostConfiguration("http://localhost:" + myport + "/");
+                HttpSelfHostConfiguration configuration = new HttpSelfHostConfiguration("http://localhost:" + myport + "/");
                 configuration.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", (object)new
                 {
-                    id = RouteParameter.Optional
+                    id = System.Web.Http.RouteParameter.Optional
                 });
                 this._server = new HttpSelfHostServer(configuration);
                 this._server.OpenAsync().Wait();

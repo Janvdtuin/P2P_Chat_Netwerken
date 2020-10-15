@@ -44,7 +44,7 @@ namespace P2P_Netwerken.Viewmodel
 
         public ObservableCollection<IPHostNameCombi> List { get; set; }
 
-        private static SynchronizationContext uiContext = SynchronizationContext.Current;
+        private SynchronizationContext uiContext = SynchronizationContext.Current;
 
         public ObservableCollection<IPHostNameCombi> tl = new ObservableCollection<IPHostNameCombi>();
 
@@ -134,8 +134,6 @@ namespace P2P_Netwerken.Viewmodel
             {
                 //initialize ChatProxy object to start a connection to the peer
 
-
-
                 MessageBox.Show(SelectedItem.IpAddress);
             }
             else
@@ -192,45 +190,26 @@ namespace P2P_Netwerken.Viewmodel
      
         private void Dowork_Ping(object sender, DoWorkEventArgs e)
         {
-            string ipBase = GetLocalNetworkID();
+            var start = IPAddress.Parse(GetLocalNetworkID() + "0");
+            var end = IPAddress.Parse(GetLocalNetworkID() + "20");
 
-            for (int i=0; i<255; i++)
+            var range = new IPAddressRange(start, end);
+
+            double i = 0;
+            foreach (IPAddress ip in range)
             {
-                string ip = ipBase + i.ToString();
+                pingReply = ping.Send(GetLocalNetworkID() + i, 100);
 
-                Ping p = new Ping();
-                p.PingCompleted += new PingCompletedEventHandler(p_PingCompleted); ;
-            
-                p.SendAsync(ip, 100, ip);
-                _worker.ReportProgress((int)CalculateProgress(i, 255));
-
-            }
-
-        }
-
-        private void p_PingCompleted(object sender, PingCompletedEventArgs e)
-        {
-            string ip = (string)e.UserState;
-            if (e.Reply != null && e.Reply.Status == IPStatus.Success)
-            {
-                string name;
-                try
+                if (pingReply.Status == IPStatus.Success)
                 {
-                    IPHostEntry hostEntry = Dns.GetHostEntry(ip);
-                    name = hostEntry.HostName;
+                    uiContext.Send(x => List.Add(new IPHostNameCombi() { IpAddress = ip.ToString(), HostName = Dns.GetHostEntry(ip).HostName }), null);
                 }
-                catch (SocketException ex)
-                {
-                    name = "?";
-                }
-                uiContext.Send(x => List.Add(new IPHostNameCombi() { IpAddress = ip, HostName = name }), null);
 
-                Console.WriteLine("{0} ({1}) is up: ({2} ms)", ip, name, e.Reply.RoundtripTime);
+                Console.WriteLine(ip);
+
+                _worker.ReportProgress((int)CalculateProgress(i, 19));
+                i++;
             }
-            else
-            {
-                Console.WriteLine("{0} is up: ({1} ms)", ip, e.Reply.RoundtripTime);
-            }        
         }
 
         private double CalculateProgress(double count, double max)

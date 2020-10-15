@@ -13,8 +13,8 @@
              ScrollViewer.VerticalScrollBarVisibility="Auto"
              ScrollViewer.CanContentScroll="True" 
                  HorizontalAlignment="Stretch" 
-                 Margin="5, 5, 5, 5" Name="chatArea" VerticalAlignment="Stretch" Width="Auto" Grid.Row="0" IsReadOnly="True" />
-        
+                 Margin="5, 5, 5, 5" Name="chatArea" VerticalAlignment="Stretch" Width="Auto" Grid.Row="0" IsReadOnly="True" Text="{Binding ChatAreaText}" />
+
         <TextBox Height="25" Text="" HorizontalAlignment="Stretch" Margin="127,8,99,7" Name="inputText" VerticalAlignment="Stretch" Width="Auto" Grid.Row="1" KeyDown="userInputText_KeyDown" />
 
         <TextBlock HorizontalAlignment="Right" Margin="0,2,418,0" Grid.Row="2" Grid.RowSpan="2" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="61"/>
