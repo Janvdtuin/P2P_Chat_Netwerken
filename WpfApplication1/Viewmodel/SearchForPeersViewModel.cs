@@ -62,7 +62,7 @@ namespace P2P_Netwerken.Viewmodel
 
             ping = new Ping();
             ScanForPeersButtonClickCommand = new RelayCommand(execute => ScanForPeersButtonClick(), canExecute => CanExecuteScanForPeersButtonClick());
-            ConnectToPeerButtonClickCommand = new RelayCommand(execute => ConnectToPeerButtonClick(), canExecute => CanExecuteConnectToPeerButtonClick());
+            ConnectToPeerButtonClickCommand = new RelayCommand(execute => ConnectToPeerButtonClick(execute), canExecute => CanExecuteConnectToPeerButtonClick());
 
         }
 
@@ -83,7 +83,6 @@ namespace P2P_Netwerken.Viewmodel
                 {
                     _CurrentProgress = value;
                     OnPropertyChanged("CurrentProgress");
-
                 }
             }
         }
@@ -128,13 +127,22 @@ namespace P2P_Netwerken.Viewmodel
         
         }
 
-        private void ConnectToPeerButtonClick()
+        private void ConnectToPeerButtonClick(object parameter)
         {
             if (Selected)
             {
-                //initialize ChatProxy object to start a connection to the peer
+                //open ChatView window with the credentials filled in.
+                ChatView chatwindow = new ChatView
+                {
+                    WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen
+                };
 
-                MessageBox.Show(SelectedItem.IpAddress);
+                ChatViewViewModel chatViewViewModel = new ChatViewViewModel();
+                chatViewViewModel.IpAddress = "http://" + SelectedItem.IpAddress + ":900";
+                chatwindow.DataContext = chatViewViewModel;
+                chatwindow.Show();
+
+                (parameter as Window)?.Close();
             }
             else
             {
@@ -190,25 +198,43 @@ namespace P2P_Netwerken.Viewmodel
      
         private void Dowork_Ping(object sender, DoWorkEventArgs e)
         {
-            var start = IPAddress.Parse(GetLocalNetworkID() + "0");
-            var end = IPAddress.Parse(GetLocalNetworkID() + "20");
+            string ipBase = GetLocalNetworkID();
 
-            var range = new IPAddressRange(start, end);
-
-            double i = 0;
-            foreach (IPAddress ip in range)
+            for (int i = 0; i < 255; i++)
             {
-                pingReply = ping.Send(GetLocalNetworkID() + i, 100);
+                string ip = ipBase + i.ToString();
 
-                if (pingReply.Status == IPStatus.Success)
+                Ping p = new Ping();
+                p.PingCompleted += new PingCompletedEventHandler(p_PingCompleted); ;
+
+                p.SendAsync(ip, 1000, ip);
+                _worker.ReportProgress((int)CalculateProgress(i, 255));
+
+            }
+        }
+
+        private void p_PingCompleted(object sender, PingCompletedEventArgs e)
+        {
+            string ip = (string)e.UserState;
+            if (e.Reply != null && e.Reply.Status == IPStatus.Success)
+            {
+                string name;
+                try
                 {
-                    uiContext.Send(x => List.Add(new IPHostNameCombi() { IpAddress = ip.ToString(), HostName = Dns.GetHostEntry(ip).HostName }), null);
+                    IPHostEntry hostEntry = Dns.GetHostEntry(ip);
+                    name = hostEntry.HostName;
                 }
+                catch (SocketException ex)
+                {
+                    name = "?";
+                }
+                uiContext.Send(x => List.Add(new IPHostNameCombi() { IpAddress = ip, HostName = name }), null);
 
-                Console.WriteLine(ip);
-
-                _worker.ReportProgress((int)CalculateProgress(i, 19));
-                i++;
+                Console.WriteLine("{0} ({1}) is up: ({2} ms)", ip, name, e.Reply.RoundtripTime);
+            }
+            else
+            {
+                Console.WriteLine("{0} is up: ({1} ms)", ip, e.Reply.RoundtripTime);
             }
         }
 

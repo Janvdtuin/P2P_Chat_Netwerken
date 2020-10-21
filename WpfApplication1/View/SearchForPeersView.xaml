@@ -20,7 +20,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <TextBox Text="{Binding ElementName=Peerlb, Path=SelectedValue}" Margin="10,320,645,76" />
-        <Button x:Name="ConnectToPeer" Content="Connect" Command="{Binding ConnectToPeerButtonClickCommand}" Margin="660,201,-1,169"/>
+        <Button x:Name="ConnectToPeer" Content="Connect" Command="{Binding ConnectToPeerButtonClickCommand}" CommandParameter="{Binding ElementName=SearchForPeersView}" Margin="660,201,-1,169"/>
 
         <Button Content="Scan" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="92" Height="49" Margin="0,0,30,30" Command="{Binding ScanForPeersButtonClickCommand}"/>
         <ProgressBar 

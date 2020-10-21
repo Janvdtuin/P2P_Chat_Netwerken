@@ -1,4 +1,6 @@
-﻿using P2P_Netwerken.View;
+﻿using P2P_Netwerken.ChatBusiness;
+using P2P_Netwerken.ChatModels;
+using P2P_Netwerken.View;
 using P2P_Netwerken.Viewmodel.Command;
 using System;
 using System.Collections.Generic;
@@ -22,11 +24,10 @@ namespace P2P_Netwerken.Viewmodel
             TempChatButtonClickCommand = new RelayCommand(execute => TempChatButtonClick(execute), canExecute => CanExecuteSearchForPeersButtonClick());
 
         }
+        
 
         private void TempChatButtonClick(object parameter)
         {
-            TestObject.Instance.test = "test";
-
             //open chat screen
             ChatView chatwindow = new ChatView
             {
