@@ -66,7 +66,7 @@ namespace P2P_Netwerken.ChatBusiness
             {
                 HttpResponseMessage response = await this._client.PostAsync("api/chat", (HttpContent)m.serializedMessage);
                 if (response.StatusCode != HttpStatusCode.OK)
-                    this.ShowError("Partner responded, but awkwardly! Better hide!");
+                    this.ShowError("Something went wrong");
                 this.ShowMessage(m);
                 response = (HttpResponseMessage)null;
             }

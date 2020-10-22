@@ -6,10 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:P2P_Netwerken.View"
         mc:Ignorable="d"
-        Title="MainWindowView" Height="450" Width="800">
+        Title="Home" Height="450" Width="800">
     <Grid>
-        <Button Name="SearchPeersButton" Content="Search for peers" HorizontalAlignment="Left" Margin="265,60,0,0" VerticalAlignment="Top" Width="267" Height="57" Command="{Binding SearchForPeersButtonClickCommand}" CommandParameter="{Binding ElementName=MainWindow}"/>
-        <Button Content="Temp Chat" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Width="75" Command="{Binding TempChatButtonClickCommand}" CommandParameter="{Binding ElementName=MainWindow}" />
+        <Button Name="SearchPeersButton" Content="Search for peers" HorizontalAlignment="Center" Width="184" Height="45" Command="{Binding SearchForPeersButtonClickCommand}" CommandParameter="{Binding ElementName=MainWindow}" Margin="0,-100,0,0" />
+        <Button Content="Manual chatbox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="184" Command="{Binding ChatButtonClickCommand}" CommandParameter="{Binding ElementName=MainWindow}" Height="45" Margin="0,209,0,0" />
 
     </Grid>
 </Window>

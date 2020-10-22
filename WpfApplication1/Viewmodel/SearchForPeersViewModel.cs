@@ -22,17 +22,10 @@ namespace P2P_Netwerken.Viewmodel
     class SearchForPeersViewModel : INotifyPropertyChanged
     {
 
-        private IpManager mgr;
-
         private string localIP;
         private Ping ping;
-        private PingReply pingReply;
-
         private string ipAddress;
         private string hostName;
-
-
-        private IPAddressRange range;
         public ICommand ScanForPeersButtonClickCommand { get; }
         public ICommand ConnectToPeerButtonClickCommand { get; }
 
@@ -52,9 +45,10 @@ namespace P2P_Netwerken.Viewmodel
 
         public SearchForPeersViewModel()
         {
-            mgr = new IpManager();
-            List = mgr.GetCombis();
+            //List which contains a combination of IP address and hostname
+            List = new ObservableCollection<IPHostNameCombi>();
 
+            //create new backgroundworker to search for peers without freezing the GUI
             _worker = new BackgroundWorker();
             _worker.WorkerReportsProgress = true;
             _worker.ProgressChanged += new ProgressChangedEventHandler(ProgressChanged);
@@ -131,7 +125,7 @@ namespace P2P_Netwerken.Viewmodel
         {
             if (Selected)
             {
-                //open ChatView window with the credentials filled in.
+                //open ChatView window with the credentials from peerlist filled in.
                 ChatView chatwindow = new ChatView
                 {
                     WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen
@@ -174,7 +168,7 @@ namespace P2P_Netwerken.Viewmodel
             return true;
         }
 
-
+        //returns the local network id by connecting to a socket and reading its endpoint.
         private string GetLocalNetworkID()
         {
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
@@ -209,7 +203,6 @@ namespace P2P_Netwerken.Viewmodel
 
                 p.SendAsync(ip, 1000, ip);
                 _worker.ReportProgress((int)CalculateProgress(i, 255));
-
             }
         }
 
@@ -257,12 +250,10 @@ namespace P2P_Netwerken.Viewmodel
 
         }
 
-        // this method raises PropertyChanged event
         protected void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null) // if there is any subscribers 
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

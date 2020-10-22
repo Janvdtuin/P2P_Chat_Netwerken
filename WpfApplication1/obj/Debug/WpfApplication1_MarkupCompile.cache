@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\janva\Downloads\p2p\p2p\WpfApplication1\obj\Debug\
+C:\Users\janva\Documents\GitHub\P2P_Chat_Netwerken\WpfApplication1\obj\Debug\
 P2P_Netwerken
 none
 false
 DEBUG;TRACE
-C:\Users\janva\Downloads\p2p\p2p\WpfApplication1\App.xaml
+C:\Users\janva\Documents\GitHub\P2P_Chat_Netwerken\WpfApplication1\App.xaml
 31142504759
 
-18-1268734090
-72291631074
+16-1551109510
+72-42247164
 View\ChatView.xaml;View\MainWindowView.xaml;View\SearchForPeersView.xaml;
 
 False

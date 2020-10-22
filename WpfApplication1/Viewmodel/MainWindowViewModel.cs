@@ -15,18 +15,17 @@ namespace P2P_Netwerken.Viewmodel
     class MainWindowViewModel
     {
         public ICommand SearchForPeersButtonClickCommand { get; }
-        public ICommand TempChatButtonClickCommand { get; }
+        public ICommand ChatButtonClickCommand { get; }
 
 
         public MainWindowViewModel()
         {
             SearchForPeersButtonClickCommand = new RelayCommand(execute => SearchForPeersButtonClick(execute), canExecute => CanExecuteSearchForPeersButtonClick());
-            TempChatButtonClickCommand = new RelayCommand(execute => TempChatButtonClick(execute), canExecute => CanExecuteSearchForPeersButtonClick());
-
+            ChatButtonClickCommand = new RelayCommand(execute => ChatButtonClick(execute), canExecute => CanExecuteSearchForPeersButtonClick());
         }
         
 
-        private void TempChatButtonClick(object parameter)
+        private void ChatButtonClick(object parameter)
         {
             //open chat screen
             ChatView chatwindow = new ChatView
@@ -54,7 +53,6 @@ namespace P2P_Netwerken.Viewmodel
             searchForPeersWindow.Show();
 
             (parameter as Window)?.Close();
-
         }
 
         private bool CanExecuteSearchForPeersButtonClick()

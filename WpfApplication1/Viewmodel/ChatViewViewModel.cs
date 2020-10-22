@@ -89,45 +89,32 @@ namespace P2P_Netwerken.Viewmodel
         #endregion
 
         #region Commands
-        public ICommand TestButtonClickCommand { get; }
         public ICommand SendButtonClickCommand { get; }
         public ICommand StartChatButtonClickCommand { get; }
-        public ICommand FileTransferButtonClickCommand { get; }
+        public ICommand EnterDownCommand { get; }
+
         #endregion
         private ChatProxy _cp { get; set; }
 
         private string FilePath;
         public ChatViewViewModel()
         {
-            TestButtonClickCommand = new RelayCommand(execute => TestButtonClick(), canExecute => true);
 
             SendButtonClickCommand = new RelayCommand(execute => SendButtonClick(), canExecute => true);
 
             StartChatButtonClickCommand = new RelayCommand(execute => StartChatButtonClick(), canExecute => true);
 
-            FileTransferButtonClickCommand = new RelayCommand(execute => FileTransferButtonClick(), canExecute => true);
-
+            EnterDownCommand = new RelayCommand(execute => OnEnterDown(), canExecute => true);
 
             Port = "900";
             IpAddress = "http://localhost:900";
             Username = "Jan";
-
-
         }
 
-        private void FileTransferButtonClick()
+        private void OnEnterDown()
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-
-            openFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            openFile.ShowDialog();
-
-            FilePath = openFile.FileName;
-        
+            SendButtonClick();
         }
-
-        
 
         private void SendButtonClick()
         {
@@ -154,12 +141,10 @@ namespace P2P_Netwerken.Viewmodel
                     ChatAreaText += ("Ready to chat");
                     ChatAreaText += Environment.NewLine;
                 }
-            }else
-            {
-                ShowStatus("Please fill in all the fields");
-            }
-
-
+                }else
+                {
+                    ShowStatus("Please fill in all the fields");
+                }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -180,7 +165,6 @@ namespace P2P_Netwerken.Viewmodel
             _cp.SendMessage(m);
             UserInputText = "";
         }
-
 
         private void TestButtonClick()
         {

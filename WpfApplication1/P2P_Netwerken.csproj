@@ -100,12 +100,10 @@
     <Compile Include="Viewmodel\Command\RelayCommand.cs" />
     <Compile Include="Viewmodel\MainWindowViewModel.cs" />
     <Compile Include="Viewmodel\SearchForPeersViewModel.cs" />
-    <Compile Include="Viewmodel\TestObject.cs" />
     <Compile Include="View\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IPHostNameCombi.cs" />
-    <Compile Include="View\IpManager.cs" />
     <Compile Include="View\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
